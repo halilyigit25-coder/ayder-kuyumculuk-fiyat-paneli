@@ -178,14 +178,21 @@ if(!rows||!rows.length)throw new Error("Formül ayarları bulunamadı.");
 const f=rows[0];
 
 const mapping={
-bracelet_buy:"bracelet_buy",bracelet_sell:"bracelet_sell",
-full_buy_factor:"full_multiplier",full_buy_multiplier:"full_multiplier",
-full_sell_factor:"full_multiplier",full_sell_multiplier:"full_multiplier",
-half_buy_divisor:"half_divisor",half_sell_divisor:"half_divisor",
-quarter_buy_divisor:"quarter_divisor",quarter_sell_divisor:"quarter_divisor",
-has_buy_multiplier:"has_buy_multiplier",has_sell_multiplier:"has_sell_multiplier",
-handled_deduction:"handled_deduction",handled_buy_multiplier:"handled_buy_multiplier",
-handled_full_multiplier:"handled_full_multiplier"
+  bracelet_buy: "bracelet_buy",
+  bracelet_sell: "bracelet_sell",
+  full_buy_factor: "full_buy_factor",
+  full_buy_multiplier: "full_buy_multiplier",
+  full_sell_factor: "full_sell_factor",
+  full_sell_multiplier: "full_sell_multiplier",
+  half_buy_divisor: "half_buy_divisor",
+  half_sell_divisor: "half_sell_divisor",
+  quarter_buy_divisor: "quarter_buy_divisor",
+  quarter_sell_divisor: "quarter_sell_divisor",
+  has_buy_multiplier: "has_buy_multiplier",
+  has_sell_multiplier: "has_sell_multiplier",
+  handled_deduction: "handled_deduction",
+  handled_buy_multiplier: "handled_buy_multiplier",
+  handled_full_multiplier: "handled_full_multiplier"
 };
 formulaFields.forEach(id=>{
 const field=document.getElementById(id);
@@ -222,19 +229,30 @@ method:"PATCH",headers:{"Prefer":"return=minimal"},
 body:JSON.stringify({has_buy:buy,has_sell:sell})
 },accessToken);
 
-const formula={
-bracelet_buy:v.bracelet_buy,
-bracelet_sell:v.bracelet_sell,
-full_multiplier:v.full_buy_factor,
-half_divisor:v.half_buy_divisor,
-quarter_divisor:v.quarter_buy_divisor,
-has_buy_multiplier:v.has_buy_multiplier,
-has_sell_multiplier:v.has_sell_multiplier,
-handled_deduction:v.handled_deduction,
-handled_buy_multiplier:v.handled_buy_multiplier,
-handled_full_multiplier:v.handled_full_multiplier,
-updated_at:new Date().toISOString()
+const formula = {
+  bracelet_buy: v.bracelet_buy,
+  bracelet_sell: v.bracelet_sell,
+  full_buy_factor: v.full_buy_factor,
+  full_sell_factor: v.full_sell_factor,
+  full_buy_multiplier: v.full_buy_multiplier,
+  full_sell_multiplier: v.full_sell_multiplier,
+  half_buy_divisor: v.half_buy_divisor,
+  half_sell_divisor: v.half_sell_divisor,
+  quarter_buy_divisor: v.quarter_buy_divisor,
+  quarter_sell_divisor: v.quarter_sell_divisor,
+  has_buy_multiplier: v.has_buy_multiplier,
+  has_sell_multiplier: v.has_sell_multiplier,
+  handled_deduction: v.handled_deduction,
+  handled_buy_multiplier: v.handled_buy_multiplier,
+  handled_full_multiplier: v.handled_full_multiplier,
+  updated_at: new Date().toISOString()
 };
+
+await api("gold_formula_settings?id=eq.1", {
+  method: "PATCH",
+  headers: {"Prefer": "return=minimal"},
+  body: JSON.stringify(formula)
+}, accessToken);
 
 if(v.full_buy_factor!==v.full_sell_factor||
 v.half_buy_divisor!==v.half_sell_divisor||
