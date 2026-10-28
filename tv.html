@@ -1,0 +1,92 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ayder Kuyumculuk | Altın Fiyatları</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#0c0c0c;color:#fff;font-family:Arial,sans-serif}
+header{text-align:center;padding:20px 12px 12px;border-bottom:2px solid #b9974e}
+h1{margin:0;color:#e5c574;letter-spacing:2px;font-size:clamp(25px,3vw,46px)}
+.owner{color:#d8b66b;font-size:14px;margin-top:8px}
+#clock{color:#ddd;font-size:15px;margin-top:8px}
+main{max-width:1500px;margin:auto;padding:14px}
+table{width:100%;border-collapse:collapse;table-layout:fixed}
+th{color:#e5c574;font-size:clamp(14px,1.6vw,23px);padding:12px 5px;border-bottom:2px solid #80672f}
+td{padding:9px 5px;border-bottom:1px solid #383127;text-align:center;font-size:clamp(15px,1.9vw,27px)}
+th:first-child,td:first-child{width:48%;text-align:left}
+th:not(:first-child),td:not(:first-child){width:26%}
+.product{display:flex;align-items:center;gap:12px}
+.product img{width:clamp(48px,6vw,82px);height:clamp(48px,6vw,82px);object-fit:contain;background:#fff;border-radius:8px}
+.name{font-weight:bold;color:#fff}
+.sub{font-size:12px;color:#aaa;margin-top:5px}
+.price{color:#e5c574;font-weight:bold;white-space:nowrap}
+.no-sale{color:#ffcf86;font-size:clamp(12px,1.3vw,18px);font-weight:bold}
+footer{text-align:center;color:#d7b96f;padding:14px;font-size:clamp(13px,1.5vw,20px)}
+#status{font-size:12px;color:#aaa;text-align:center;padding:6px}
+@media(max-width:600px){main{padding:6px}.product{gap:6px}td{padding:9px 2px}.sub{font-size:10px}}
+</style>
+</head>
+<body>
+<header>
+<h1>AYDER KUYUMCULUK</h1>
+<div class="owner">İŞLETME SAHİBİ: AYDIN BALİ</div>
+<div id="clock"></div>
+</header>
+<main>
+<table>
+<thead><tr><th>ÜRÜN</th><th>ALIŞ</th><th>SATIŞ</th></tr></thead>
+<tbody id="prices">
+<tr><td colspan="3">Fiyatlar yükleniyor...</td></tr>
+</tbody>
+</table>
+<div id="status">Fiyatlar güncelleniyor</div>
+</main>
+<footer>Güvenin ve zarafetin adresi</footer>
+<script>
+const SUPABASE_URL="https://hskoulicnsrdeqqdwagi.supabase.co";
+const SUPABASE_KEY="sb_publishable_9ONcsJU94TGz4eo1ZQ4H_Q_a28u5dxK";
+
+const products=[
+ {name:"22 Ayar Bilezik",sub:"Gram fiyatı",image:"https://images.unsplash.com/photo-1611652022419-a9419f74343d?auto=format&fit=crop&w=180&q=80"},
+ {name:"Tam Altın",sub:"Darphane · adet",image:"https://images.unsplash.com/photo-1610375461246-83df859d849d?auto=format&fit=crop&w=180&q=80"},
+ {name:"Yarım Altın",sub:"Darphane · adet",image:"https://images.unsplash.com/photo-1610375461246-83df859d849d?auto=format&fit=crop&w=180&q=80"},
+ {name:"Çeyrek Altın",sub:"Darphane · adet",image:"https://images.unsplash.com/photo-1610375461246-83df859d849d?auto=format&fit=crop&w=180&q=80"},
+ {name:"24 Ayar Has Altın",sub:"Gram fiyatı",image:"https://images.unsplash.com/photo-1610375461246-83df859d849d?auto=format&fit=crop&w=180&q=80"},
+ {name:"Kulplu Tam Altın",sub:"Alış var · satış yok",image:"https://images.unsplash.com/photo-1610375461246-83df859d849d?auto=format&fit=crop&w=180&q=80",noSale:true},
+ {name:"Kulplu Yarım Altın",sub:"Alış var · satış yok",image:"https://images.unsplash.com/photo-1610375461246-83df859d849d?auto=format&fit=crop&w=180&q=80",noSale:true},
+ {name:"Kulplu Çeyrek Altın",sub:"Alış var · satış yok",image:"https://images.unsplash.com/photo-1610375461246-83df859d849d?auto=format&fit=crop&w=180&q=80",noSale:true}
+];
+const tl=n=>Number.isFinite(n)?Math.round(n).toLocaleString("tr-TR")+" TL":"—";
+function showClock(){document.getElementById("clock").textContent=new Date().toLocaleString("tr-TR",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit",second:"2-digit"});}
+function row(p,buy,sell){return `<tr><td><div class="product"><img src="${p.image}" alt="${p.name}"><div><div class="name">${p.name}</div><div class="sub">${p.sub}</div></div></div></td><td class="price">${tl(buy)}</td><td>${p.noSale?'<span class="no-sale">SATIŞ YOK</span>':`<span class="price">${tl(sell)}</span>`}</td></tr>`;}
+async function refresh(){
+ const status=document.getElementById("status");
+ try{
+  const r=await fetch(SUPABASE_URL+"/rest/v1/gold_prices?select=has_buy,has_sell&limit=1",{headers:{"apikey":SUPABASE_KEY,"Authorization":"Bearer "+SUPABASE_KEY}});
+  if(!r.ok)throw new Error("Fiyat verisi alınamadı");
+  const data=await r.json();
+  if(!data.length)throw new Error("Fiyat kaydı bulunamadı");
+  const hb=Number(data[0].has_buy), hs=Number(data[0].has_sell);
+  const tamA=hb*.910*7, tamS=hs*.945*7;
+  const kulpluTam=(hb-30)*.910*7;
+  const vals=[
+   [hb*.910,hs*.945],
+   [tamA,tamS],
+   [tamA/2,tamS/2],
+   [tamA/4,tamS/4],
+   [hb*.990,hs*1.020],
+   [kulpluTam,null],
+   [kulpluTam/2,null],
+   [kulpluTam/4,null]
+  ];
+  document.getElementById("prices").innerHTML=products.map((p,i)=>row(p,vals[i][0],vals[i][1])).join("");
+  status.textContent="Fiyatlar güncel · Son kontrol: "+new Date().toLocaleTimeString("tr-TR");
+ }catch(e){status.textContent="Bağlantı bekleniyor: "+e.message;}
+}
+showClock();setInterval(showClock,1000);refresh();setInterval(refresh,5000);
+</script>
+</body>
+</html>
