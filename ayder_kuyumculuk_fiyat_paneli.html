@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#111111">
+<title>Ayder Kuyumculuk | Canlı Fiyat Listesi</title>
+<style>
+:root{--bg:#0d0d0f;--panel:#171719;--panel2:#202023;--gold:#d7b56d;--gold2:#f0d99d;--text:#f7f4ec;--muted:#aaa7a0;--line:#39362e;--green:#7bd6a4;--red:#ff9b91}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#090909,#171511);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.wrap{max-width:1150px;margin:auto;padding:20px}.header{display:flex;align-items:center;justify-content:space-between;gap:14px;border-bottom:1px solid var(--line);padding:10px 0 20px;margin-bottom:20px}
+.brand{display:flex;align-items:center;gap:14px}.mark{width:58px;height:58px;border:1px solid var(--gold);border-radius:50%;display:grid;place-items:center;color:var(--gold);font-size:27px}.brand h1{margin:0;color:var(--gold);letter-spacing:1.5px;font-size:clamp(20px,3vw,30px)}.brand p{margin:5px 0 0;color:var(--muted);font-size:12px;letter-spacing:2px}.status{color:var(--muted);font-size:12px;text-align:right}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}.tab,button{border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--panel2);color:var(--text);cursor:pointer;font:inherit}.tab.active,button.primary{background:var(--gold);color:#17130a;border-color:var(--gold);font-weight:700}.tab:hover,button:hover{filter:brightness(1.08)}
+.notice{border:1px solid #65522b;background:#201b10;color:#e9d5a4;border-radius:12px;padding:12px 14px;font-size:13px;line-height:1.5;margin-bottom:18px}
+.card{background:rgba(23,23,25,.96);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:18px;box-shadow:0 10px 30px #0003}.card h2{margin:0 0 14px;color:var(--gold);font-size:18px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.field{display:flex;flex-direction:column;gap:6px}.field label{color:var(--muted);font-size:13px}.field input,.field select{width:100%;min-width:0;background:#0d0d0f;color:var(--text);border:1px solid #48443a;border-radius:9px;padding:12px;font:inherit}.field input:focus{outline:2px solid #a88745}
+.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:590px}th{text-align:left;color:var(--gold);font-size:12px;text-transform:uppercase;letter-spacing:.7px;padding:13px 10px;border-bottom:1px solid var(--line)}td{padding:15px 10px;border-bottom:1px solid #302e29}td.num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--gold2);font-weight:700}.product{font-weight:650}.sub{display:block;font-size:11px;color:var(--muted);font-weight:400;margin-top:3px}.foot{color:var(--muted);font-size:12px;line-height:1.5;margin-top:12px}.row-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.small{font-size:12px;padding:7px 10px}.danger{color:#ffb7af;border-color:#75413b}.hidden{display:none!important}.factor-table input{width:110px;max-width:100%;background:#0d0d0f;color:var(--text);border:1px solid #48443a;border-radius:7px;padding:8px}.factor-table td{padding:9px 7px}.factor-table td:first-child{font-size:13px}
+@media(min-width:760px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}.wrap{padding:28px}.card{padding:22px}}
+@media(max-width:520px){.wrap{padding:13px}.header{align-items:flex-start}.mark{width:46px;height:46px}.status{max-width:105px;font-size:10px}.brand p{letter-spacing:1px}.card{padding:14px}.grid{grid-template-columns:1fr 1fr}.field input{padding:10px}.tab{padding:9px 11px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="header">
+    <div class="brand"><div class="mark">✦</div><div><h1>AYDER KUYUMCULUK</h1><p>ALTIN ALIŞ · SATIŞ FİYAT LİSTESİ</p></div></div>
+    <div class="status"><div>FİYAT KAYNAĞI</div><strong style="color:var(--gold)">Manuel giriş</strong><div id="updated">Henüz güncellenmedi</div></div>
+  </header>
+  <div class="notice"><strong>Bilgi:</strong> Bu sürümde Harem Altın'a otomatik bağlantı yoktur. Has alış ve satış fiyatlarını siz girersiniz; diğer fiyatlar belirlediğiniz formüllerle otomatik hesaplanır. Veriler bu cihazın tarayıcısına kaydedilir.</div>
+  <nav class="tabs">
+    <button class="tab active" data-tab="prices">Fiyat Listesi</button>
+    <button class="tab" data-tab="admin">Fiyat Yönetimi</button>
+    <button class="tab" data-tab="formulas">Formüller</button>
+  </nav>
+  <section id="prices">
+    <div class="card">
+      <h2>Güncel Alış / Satış</h2>
+      <div class="table-wrap"><table><thead><tr><th>Ürün</th><th style="text-align:right">Alış</th><th style="text-align:right">Satış</th></tr></thead><tbody id="priceRows"></tbody></table></div>
+      <div class="foot">Fiyatlar TL cinsindendir. Bu ekranı tarayıcı menüsünden “Ana Ekrana Ekle” ile telefonda uygulama gibi açabilirsiniz.</div>
+    </div>
+  </section>
+  <section id="admin" class="hidden">
+    <div class="card">
+      <h2>Has Altın Fiyatları</h2>
+      <div class="grid">
+        <div class="field"><label for="hasBuy">24 ayar has alış (TL)</label><input id="hasBuy" type="number" step="0.01" inputmode="decimal"></div>
+        <div class="field"><label for="hasSell">24 ayar has satış (TL)</label><input id="hasSell" type="number" step="0.01" inputmode="decimal"></div>
+      </div>
+      <div class="row-actions"><button class="primary" id="save">Fiyatları Kaydet</button><button id="reset">Örnek değerlere dön</button></div>
+      <div class="foot">Has fiyatını değiştirdiğinizde bağlı ürünlerin fiyatları otomatik yeniden hesaplanır.</div>
+    </div>
+    <div class="card">
+      <h2>Listede Görünecek Ürünler</h2>
+      <div id="productEditor"></div>
+      <div class="row-actions"><button class="primary" id="addProduct">+ Ürün Ekle</button><button id="restoreProducts">Varsayılan ürünleri getir</button></div>
+      <div class="foot">Ürün adını değiştirebilir, listeden kaldırabilir veya yeni bir ürün ekleyebilirsiniz. Yeni ürünün formülünü “Formüller” sekmesinden ayarlayın.</div>
+    </div>
+  </section>
+  <section id="formulas" class="hidden">
+    <div class="card">
+      <h2>Otomatik Fiyat Formülleri</h2>
+      <div class="notice">Katsayılar çarpan olarak girilir. Örneğin 0,910 katsayısı 0.910 olarak yazılır. Değişiklikler kaydedilince fiyat listesi otomatik güncellenir.</div>
+      <div class="table-wrap"><table class="factor-table"><thead><tr><th>Ürün / fiyat</th><th>Hesaplama</th><th>Katsayı</th></tr></thead><tbody id="formulaRows"></tbody></table></div>
+      <div class="row-actions"><button class="primary" id="saveFormulas">Formülleri Kaydet</button><button id="resetFormulas">Verdiğim formüllere dön</button></div>
+      <div class="foot">Cumhuriyet (tam) alış = has alış × 0,910 × 7; satış = has satış × 0,945 × 7. Yarım, tam fiyatın yarısı; çeyrek, tam fiyatın dörtte biridir. 22 ayar hurda ve 22 ayar alış/satış katsayıları da aynı şekilde düzenlenebilir.</div>
+    </div>
+  </section>
+  <div class="foot" style="text-align:center;padding:8px 0 24px">AYDER KUYUMCULUK · Siyah & Altın Fiyat Paneli</div>
+</div>
+<script>
+const defaults = {
+  hasBuy:6473, hasSell:6503,
+  products:[
+    {id:'p22',name:'22 Ayar Altın',buy:'hasBuy*0.910',sell:'hasSell*0.945',visible:true},
+    {id:'full',name:'Cumhuriyet (Tam) Altın',buy:'hasBuy*0.910*7',sell:'hasSell*0.945*7',visible:true},
+    {id:'half',name:'Yarım Altın',buy:'(hasBuy*0.910*7)/2',sell:'(hasSell*0.945*7)/2',visible:true},
+    {id:'quarter',name:'Çeyrek Altın',buy:'(hasBuy*0.910*7)/4',sell:'(hasSell*0.945*7)/4',visible:true},
+    {id:'has24',name:'24 Ayar Has Altın',buy:'hasBuy*0.990',sell:'hasSell*1.020',visible:true},
+    {id:'scrap',name:'22 Ayar Hurda Altın',buy:'hasBuy*0.910',sell:'hasSell*0.945',visible:true}
+  ],
+  factors:[
+    {id:'22b',label:'22 Ayar Altın alış',expr:'Has alış × katsayı',key:'f22b',value:0.910,base:'hasBuy'},
+    {id:'22s',label:'22 Ayar Altın satış',expr:'Has satış × katsayı',key:'f22s',value:0.945,base:'hasSell'},
+    {id:'fullb',label:'Cumhuriyet (Tam) alış',expr:'Has alış × 22 ayar alış katsayısı × adet',key:'fullb',value:7,base:'hasBuy'},
+    {id:'fulls',label:'Cumhuriyet (Tam) satış',expr:'Has satış × 22 ayar satış katsayısı × adet',key:'fulls',value:7,base:'hasSell'},
+    {id:'halfb',label:'Yarım altın bölme',expr:'Tam altın fiyatı ÷ katsayı',key:'halfb',value:2,base:'divide'},
+    {id:'quarterb',label:'Çeyrek altın bölme',expr:'Tam altın fiyatı ÷ katsayı',key:'quarterb',value:4,base:'divide'},
+    {id:'24b',label:'24 Ayar Has alış',expr:'Has alış × katsayı',key:'f24b',value:0.990,base:'hasBuy'},
+    {id:'24s',label:'24 Ayar Has satış',expr:'Has satış × katsayı',key:'f24s',value:1.020,base:'hasSell'},
+    {id:'scrapb',label:'22 Ayar Hurda alış',expr:'Has alış × katsayı',key:'fscrapb',value:0.910,base:'hasBuy'},
+    {id:'scraps',label:'22 Ayar Hurda satış',expr:'Has satış × katsayı',key:'fscraps',value:0.945,base:'hasSell'}
+  ],
+  customFormulas:{}
+};
+let state;
+try{state=JSON.parse(localStorage.getItem('ayderGoldPanel'))||structuredClone(defaults)}catch(e){state=JSON.parse(JSON.stringify(defaults))}
+const $=id=>document.getElementById(id);
+const money=n=>Number.isFinite(n)?new Intl.NumberFormat('tr-TR',{style:'currency',currency:'TRY',maximumFractionDigits:2}).format(n):'—';
+function factor(k, fallback){const f=state.factors.find(x=>x.key===k);return f?Number(f.value):fallback}
+function calcProduct(p){
+ const hb=Number(state.hasBuy),hs=Number(state.hasSell);
+ const vars={
+  hasBuy:hb,hasSell:hs,
+  f22b:factor('f22b',.910),f22s:factor('f22s',.945),
+  fullb:factor('fullb',7),fulls:factor('fulls',7),
+  halfb:factor('halfb',2),quarterb:factor('quarterb',4),
+  f24b:factor('f24b',.990),f24s:factor('f24s',1.020),
+  fscrapb:factor('fscrapb',.910),fscraps:factor('fscraps',.945)
+ };
+ // Only arithmetic expressions and known variable names are accepted.
+ function safeEval(expr){
+   if(typeof expr!=='string'||!/^[\d\s.+\-*/()a-zA-Z_]+$/.test(expr))return NaN;
+   const names=expr.match(/[a-zA-Z_][a-zA-Z_0-9]*/g)||[];
+   if(names.some(n=>!(n in vars)))return NaN;
+   try{return Function(...Object.keys(vars),'return ('+expr+')')(...Object.values(vars))}catch(e){return NaN}
+ }
+ let b=safeEval(p.buy),s=safeEval(p.sell);
+ if(p.id==='half'){b=safeEval('(hasBuy*f22b*fullb)/halfb');s=safeEval('(hasSell*f22s*fulls)/halfb')}
+ if(p.id==='quarter'){b=safeEval('(hasBuy*f22b*fullb)/quarterb');s=safeEval('(hasSell*f22s*fulls)/quarterb')}
+ if(p.id==='full'){b=safeEval('hasBuy*f22b*fullb');s=safeEval('hasSell*f22s*fulls')}
+ return [b,s];
+}
+function save(){localStorage.setItem('ayderGoldPanel',JSON.stringify(state));render();$('updated').textContent='Son kayıt: '+new Date().toLocaleString('tr-TR')}
+function renderPrices(){
+ $('priceRows').innerHTML='';
+ state.products.filter(p=>p.visible!==false).forEach(p=>{
+   const [b,s]=calcProduct(p);const tr=document.createElement('tr');
+   tr.innerHTML='<td class="product"></td><td class="num"></td><td class="num"></td>';
+   tr.children[0].textContent=p.name;tr.children[1].textContent=money(b);tr.children[2].textContent=money(s);
+   $('priceRows').appendChild(tr);
+ });
+}
+function renderProducts(){
+ const root=$('productEditor');root.innerHTML='';
+ state.products.forEach((p,i)=>{
+  const box=document.createElement('div');box.className='card';box.style.padding='12px';box.style.marginBottom='10px';
+  const grid=document.createElement('div');grid.className='grid';
+  const name=document.createElement('div');name.className='field';name.innerHTML='<label>Ürün adı</label>';
+  const ni=document.createElement('input');ni.value=p.name;ni.addEventListener('change',()=>{p.name=ni.value;save()});name.appendChild(ni);
+  const visible=document.createElement('div');visible.className='field';visible.innerHTML='<label>Listede göster</label>';
+  const sel=document.createElement('select');sel.innerHTML='<option value="yes">Evet</option><option value="no">Hayır</option>';sel.value=p.visible===false?'no':'yes';sel.addEventListener('change',()=>{p.visible=sel.value==='yes';save()});visible.appendChild(sel);
+  grid.append(name,visible);box.appendChild(grid);
+  const del=document.createElement('button');del.className='small danger';del.textContent='Ürünü kaldır';del.style.marginTop='10px';del.addEventListener('click',()=>{if(confirm('Bu ürün listeden kaldırılsın mı?')){state.products=state.products.filter(x=>x.id!==p.id);save()}});box.appendChild(del);
+  root.appendChild(box);
+ });
+}
+function renderFormulas(){
+ const root=$('formulaRows');root.innerHTML='';
+ state.factors.forEach(f=>{
+  const tr=document.createElement('tr');
+  const a=document.createElement('td');a.textContent=f.label;
+  const b=document.createElement('td');b.textContent=f.expr;
+  const c=document.createElement('td');const inp=document.createElement('input');inp.type='number';inp.step='0.001';inp.value=f.value;inp.dataset.key=f.key;c.appendChild(inp);
+  tr.append(a,b,c);root.appendChild(tr);
+ });
+}
+function render(){renderPrices();renderProducts();renderFormulas();$('hasBuy').value=state.hasBuy;$('hasSell').value=state.hasSell}
+document.querySelectorAll('.tab').forEach(btn=>btn.addEventListener('click',()=>{
+ document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b===btn));
+ ['prices','admin','formulas'].forEach(id=>$(id).classList.toggle('hidden',id!==btn.dataset.tab));
+}));
+$('save').addEventListener('click',()=>{const b=Number($('hasBuy').value),s=Number($('hasSell').value);if(!Number.isFinite(b)||!Number.isFinite(s)||b<=0||s<=0){alert('Lütfen geçerli alış ve satış fiyatı girin.');return}state.hasBuy=b;state.hasSell=s;save();alert('Has alış/satış fiyatları kaydedildi.')});
+$('reset').addEventListener('click',()=>{if(confirm('Has fiyatları örnek değerlere dönsün mü?')){state.hasBuy=6473;state.hasSell=6503;save()}});
+$('addProduct').addEventListener('click',()=>{
+ const id='custom'+Date.now();state.products.push({id,name:'Yeni Ürün',buy:'hasBuy*f22b',sell:'hasSell*f22s',visible:true});save();
+ document.querySelector('[data-tab="formulas"]').click();
+ alert('Ürün eklendi. Yeni ürünün formülünü geliştirici tanımıyla bağlamak gerekir; bu başlangıç sürümünde formül sekmesi mevcut katsayıları düzenler.');
+});
+$('restoreProducts').addEventListener('click',()=>{if(confirm('Varsayılan ürün listesi geri yüklensin mi?')){state.products=JSON.parse(JSON.stringify(defaults.products));save()}});
+$('saveFormulas').addEventListener('click',()=>{
+ document.querySelectorAll('#formulaRows input').forEach(inp=>{const f=state.factors.find(x=>x.key===inp.dataset.key);const v=Number(inp.value);if(f&&Number.isFinite(v)&&v>0)f.value=v});
+ save();alert('Formül katsayıları kaydedildi.');
+});
+$('resetFormulas').addEventListener('click',()=>{if(confirm('Formül katsayıları ilk değerlere dönsün mü?')){state.factors=JSON.parse(JSON.stringify(defaults.factors));save()}});
+render();
+</script>
+</body>
+</html>
