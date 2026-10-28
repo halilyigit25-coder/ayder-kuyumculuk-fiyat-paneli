@@ -4,31 +4,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ayder Kuyumculuk - Fiyat Yönetimi</title>
+<title>Ayder Kuyumculuk Yönetim Paneli</title>
 <style>
-body{margin:0;background:#101010;color:#f0d58a;font-family:Arial,sans-serif;padding:16px}
+body{margin:0;padding:18px;background:#111;color:#e8ca78;font-family:Arial,sans-serif}
 main{max-width:650px;margin:auto}
-h1{text-align:center;font-size:25px}
-h2{font-size:19px;border-bottom:1px solid #92752e;padding-bottom:9px;margin-top:28px}
-p{color:#ddd;line-height:1.5}
-label{display:block;font-size:14px;color:#f0d58a;margin-top:12px}
-input{box-sizing:border-box;width:100%;padding:12px;margin-top:6px;border-radius:7px;border:1px solid #92752e;background:#222;color:white;font-size:17px}
-button{width:100%;padding:14px;margin-top:18px;border:0;border-radius:8px;background:#d9b85c;color:#17130a;font-weight:bold;font-size:16px}
-.formula{background:#1c1c1c;padding:12px;border-radius:8px;margin-top:12px}
-.formula strong{display:block;color:#fff;font-size:15px;line-height:1.5}
-.note{font-size:12px;color:#bbb}
+h1{text-align:center}
+h2{border-bottom:1px solid #92752e;padding-bottom:8px;margin-top:25px}
+label{display:block;margin-top:12px;color:#eee}
+input{box-sizing:border-box;width:100%;padding:12px;margin-top:5px;background:#222;color:#fff;border:1px solid #92752e;border-radius:6px;font-size:17px}
+button{width:100%;padding:14px;margin-top:18px;background:#e8ca78;color:#111;border:0;border-radius:6px;font-size:16px;font-weight:bold}
+.card{background:#1b1b1b;padding:13px;margin-top:12px;border-radius:8px}
+.formula{color:#fff;font-weight:bold;line-height:1.5}
 #panel{display:none}
-#status{white-space:pre-wrap;color:white;margin-top:16px;overflow-wrap:anywhere}
+#status{color:#fff;white-space:pre-wrap;overflow-wrap:anywhere;margin-top:16px}
+.small{font-size:13px;color:#bbb;line-height:1.5}
 </style>
 </head>
 <body>
 <main>
 <h1>AYDER KUYUMCULUK</h1>
-<p style="text-align:center">Fiyat ve Formül Yönetimi</p>
+<p style="text-align:center">Altın Fiyatları ve Formül Yönetimi</p>
 
 <section id="login">
 <h2>Yönetici Girişi</h2>
-<label>E-posta adresi</label>
+<label>E-posta</label>
 <input id="email" type="email" autocomplete="username">
 <label>Şifre</label>
 <input id="password" type="password" autocomplete="current-password">
@@ -37,276 +36,256 @@ button{width:100%;padding:14px;margin-top:18px;border:0;border-radius:8px;backgr
 
 <section id="panel">
 <h2>Has Altın Fiyatları</h2>
-<label>Has alış fiyatı (TL/gram)</label>
+<label>Has alış (TL/gram)</label>
 <input id="has_buy" type="number" step="0.01">
-<label>Has satış fiyatı (TL/gram)</label>
+<label>Has satış (TL/gram)</label>
 <input id="has_sell" type="number" step="0.01">
 
 <h2>22 Ayar Bilezik</h2>
-<div class="formula">
-<strong>Has alış × alış çarpanı = bilezik alış</strong>
-<label>Alış çarpanı</label>
+<div class="card">
+<div class="formula">Has alış × alış oranı</div>
+<label>Bilezik alış oranı (varsayılan 0.910)</label>
 <input id="bracelet_buy" type="number" step="0.001">
 </div>
-<div class="formula">
-<strong>Has satış × satış çarpanı = bilezik satış</strong>
-<label>Satış çarpanı</label>
+<div class="card">
+<div class="formula">Has satış × satış oranı</div>
+<label>Bilezik satış oranı (varsayılan 0.945)</label>
 <input id="bracelet_sell" type="number" step="0.001">
 </div>
 
 <h2>Darphane Tam Altın</h2>
-<div class="formula">
-<strong>Has alış × alış çarpanı × adet katsayısı</strong>
-<label>Alış çarpanı</label>
+<div class="card">
+<div class="formula">Has alış × alış oranı × adet katsayısı</div>
+<label>Tam altın alış oranı (varsayılan 0.945)</label>
 <input id="full_buy_factor" type="number" step="0.001">
-<label>Alış adet katsayısı</label>
+<label>Alış adet katsayısı (varsayılan 7)</label>
 <input id="full_buy_multiplier" type="number" step="0.001">
 </div>
-<div class="formula">
-<strong>Has satış × satış çarpanı × adet katsayısı</strong>
-<label>Satış çarpanı</label>
+<div class="card">
+<div class="formula">Has satış × satış oranı × adet katsayısı</div>
+<label>Tam altın satış oranı (varsayılan 0.945)</label>
 <input id="full_sell_factor" type="number" step="0.001">
-<label>Satış adet katsayısı</label>
+<label>Satış adet katsayısı (varsayılan 7)</label>
 <input id="full_sell_multiplier" type="number" step="0.001">
 </div>
 
 <h2>Yarım ve Çeyrek Altın</h2>
-<div class="formula">
-<strong>Tam altın alış ÷ bölme sayısı = yarım alış</strong>
-<label>Yarım alış bölme sayısı</label>
+<div class="card">
+<div class="formula">Tam altın alış ÷ bölme sayısı</div>
+<label>Yarım alış bölme sayısı (varsayılan 2)</label>
 <input id="half_buy_divisor" type="number" step="0.001">
-<strong>Tam altın satış ÷ bölme sayısı = yarım satış</strong>
-<label>Yarım satış bölme sayısı</label>
+<div class="formula">Tam altın satış ÷ bölme sayısı</div>
+<label>Yarım satış bölme sayısı (varsayılan 2)</label>
 <input id="half_sell_divisor" type="number" step="0.001">
 </div>
-<div class="formula">
-<strong>Tam altın alış ÷ bölme sayısı = çeyrek alış</strong>
-<label>Çeyrek alış bölme sayısı</label>
+<div class="card">
+<div class="formula">Tam altın alış ÷ bölme sayısı</div>
+<label>Çeyrek alış bölme sayısı (varsayılan 4)</label>
 <input id="quarter_buy_divisor" type="number" step="0.001">
-<strong>Tam altın satış ÷ bölme sayısı = çeyrek satış</strong>
-<label>Çeyrek satış bölme sayısı</label>
+<div class="formula">Tam altın satış ÷ bölme sayısı</div>
+<label>Çeyrek satış bölme sayısı (varsayılan 4)</label>
 <input id="quarter_sell_divisor" type="number" step="0.001">
 </div>
 
 <h2>24 Ayar Has Altın</h2>
-<div class="formula">
-<strong>Has alış × çarpan = 24 ayar alış</strong>
-<label>Alış çarpanı</label>
+<div class="card">
+<div class="formula">Has alış × alış katsayısı</div>
+<label>Alış katsayısı (varsayılan 0.990)</label>
 <input id="has_buy_multiplier" type="number" step="0.001">
-<strong>Has satış × çarpan = 24 ayar satış</strong>
-<label>Satış çarpanı</label>
+<div class="formula">Has satış × satış katsayısı</div>
+<label>Satış katsayısı (varsayılan 1.020)</label>
 <input id="has_sell_multiplier" type="number" step="0.001">
 </div>
 
 <h2>Kulplu Altınlar</h2>
-<div class="formula">
-<strong>(Has alış − düşülecek tutar) × çarpan × adet katsayısı</strong>
-<label>Düşülecek tutar (TL)</label>
+<div class="card">
+<div class="formula">(Has alış − düşülecek tutar) × alış oranı × adet katsayısı</div>
+<label>Düşülecek tutar (varsayılan 30 TL)</label>
 <input id="handled_deduction" type="number" step="0.01">
-<label>Alış çarpanı</label>
+<label>Alış oranı (varsayılan 0.910)</label>
 <input id="handled_buy_multiplier" type="number" step="0.001">
-<label>Adet katsayısı</label>
+<label>Adet katsayısı (varsayılan 7)</label>
 <input id="handled_full_multiplier" type="number" step="0.001">
-<p><strong>Yarım kulplu alış = tam kulplu alış ÷ 2</strong></p>
-<p><strong>Çeyrek kulplu alış = tam kulplu alış ÷ 4</strong></p>
-<p style="color:#ffb4a8"><strong>Kulplu altınlarda satış gösterilmez.</strong></p>
+<p class="small">Yarım kulplu alış = tam kulplu alış ÷ 2. Çeyrek kulplu alış = tam kulplu alış ÷ 4. Kulplu altın satış fiyatı gösterilmez.</p>
 </div>
 
-<button id="saveBtn" onclick="saveAll()">Tüm Fiyatları ve Formülleri Kaydet</button>
-<p class="note">Kaydetme tamamlandığında TV ekranı verileri güncel formüllerle göstermelidir.</p>
+<button id="saveBtn" onclick="saveAll()">Fiyatları ve Formülleri Kaydet</button>
 </section>
 <div id="status"></div>
 </main>
 
 <script>
-const SUPABASE_URL="https://hskoulicnsrdeqqdwagi.supabase.co";
-const SUPABASE_KEY="sb_publishable_9ONcsJU94TGz4eo1ZQ4H_Q_a28u5dxK";
+const SUPABASE_URL = "https://hskoulicnsrdeqqdwagi.supabase.co";
 
-let accessToken="";
-let priceRowId=null;
+// Buraya mevcut Supabase sb_publishable_ anahtarını yaz.
+const SUPABASE_KEY = "sb_publishable_9ONcsJU94TGz4eo1ZQ4H_Q_a28u5dxK";
 
-const formulaFields=[
-"bracelet_buy","bracelet_sell",
-"full_buy_factor","full_buy_multiplier",
-"full_sell_factor","full_sell_multiplier",
-"half_buy_divisor","half_sell_divisor",
-"quarter_buy_divisor","quarter_sell_divisor",
-"has_buy_multiplier","has_sell_multiplier",
-"handled_deduction","handled_buy_multiplier",
-"handled_full_multiplier"
+let accessToken = "";
+let priceRowId = null;
+
+const fields = [
+ "bracelet_buy","bracelet_sell",
+ "full_buy_factor","full_buy_multiplier",
+ "full_sell_factor","full_sell_multiplier",
+ "half_buy_divisor","half_sell_divisor",
+ "quarter_buy_divisor","quarter_sell_divisor",
+ "has_buy_multiplier","has_sell_multiplier",
+ "handled_deduction","handled_buy_multiplier",
+ "handled_full_multiplier"
 ];
 
-function status(message){
- document.getElementById("status").textContent=message;
+function showStatus(message) {
+ document.getElementById("status").textContent = message;
 }
 
-function authHeaders(token){
- return {
-  "apikey":SUPABASE_KEY,
-  "Authorization":"Bearer "+(token||SUPABASE_KEY),
-  "Content-Type":"application/json"
- };
-}
-
-async function api(path,options={},token=""){
- const response=await fetch(SUPABASE_URL+"/rest/v1/"+path,{
+async function request(path, options = {}, token = accessToken) {
+ const response = await fetch(SUPABASE_URL + "/rest/v1/" + path, {
   ...options,
-  headers:{...authHeaders(token),...(options.headers||{})}
+  headers: {
+   "apikey": SUPABASE_KEY,
+   "Authorization": "Bearer " + (token || SUPABASE_KEY),
+   "Content-Type": "application/json",
+   ...(options.headers || {})
+  }
  });
- if(!response.ok){
-  throw new Error(await response.text()||("HTTP "+response.status));
- }
- if(response.status===204)return null;
- const text=await response.text();
- return text?JSON.parse(text):null;
+ const body = await response.text();
+ if (!response.ok) throw new Error(body || "HTTP " + response.status);
+ return body ? JSON.parse(body) : null;
 }
 
-async function login(){
- const btn=document.getElementById("loginBtn");
- btn.disabled=true;
- status("Giriş yapılıyor...");
+async function login() {
+ const button = document.getElementById("loginBtn");
+ button.disabled = true;
+ showStatus("Giriş yapılıyor...");
 
- try{
-  const response=await fetch(
-   SUPABASE_URL+"/auth/v1/token?grant_type=password",
+ try {
+  if (SUPABASE_KEY.includes("BURAYA_")) {
+   throw new Error("Önce SUPABASE_KEY alanına mevcut sb_publishable anahtarını yaz.");
+  }
+
+  const response = await fetch(
+   SUPABASE_URL + "/auth/v1/token?grant_type=password",
    {
-    method:"POST",
-    headers:{
-     "apikey":SUPABASE_KEY,
-     "Content-Type":"application/json"
+    method: "POST",
+    headers: {
+     "apikey": SUPABASE_KEY,
+     "Content-Type": "application/json"
     },
-    body:JSON.stringify({
-     email:document.getElementById("email").value.trim(),
-     password:document.getElementById("password").value
+    body: JSON.stringify({
+     email: document.getElementById("email").value.trim(),
+     password: document.getElementById("password").value
     })
    }
   );
 
-  const result=await response.json();
-  if(!response.ok){
-   throw new Error(result.msg||result.message||"E-posta veya şifre hatalı.");
-  }
+  const auth = await response.json();
+  if (!response.ok) throw new Error(auth.msg || auth.message || "Giriş başarısız.");
+  accessToken = auth.access_token;
 
-  accessToken=result.access_token;
-
-  const prices=await api(
-   "gold_prices?select=id,has_buy,has_sell&limit=1",
-   {},
-   accessToken
+  const prices = await request(
+   "gold_prices?select=id,has_buy,has_sell&limit=1"
   );
+  if (!prices || !prices.length) throw new Error("gold_prices tablosunda fiyat satırı bulunamadı.");
 
-  if(!prices||!prices.length){
-   throw new Error("Has fiyat satırı bulunamadı.");
-  }
+  priceRowId = prices[0].id;
+  document.getElementById("has_buy").value = prices[0].has_buy;
+  document.getElementById("has_sell").value = prices[0].has_sell;
 
-  priceRowId=prices[0].id;
-  document.getElementById("has_buy").value=prices[0].has_buy;
-  document.getElementById("has_sell").value=prices[0].has_sell;
+  const settings = await request("gold_formula_settings?select=*&id=eq.1");
+  if (!settings || !settings.length) throw new Error("id=1 olan formül ayarı bulunamadı.");
 
-  const rows=await api(
-   "gold_formula_settings?select=*&id=eq.1",
-   {},
-   accessToken
-  );
-
-  if(!rows||!rows.length){
-   throw new Error("Formül ayarları bulunamadı.");
-  }
-
-  const f=rows[0];
-  formulaFields.forEach(id=>{
-   const field=document.getElementById(id);
-   if(f[id]!==undefined&&f[id]!==null){
-    field.value=f[id];
+  const row = settings[0];
+  fields.forEach(id => {
+   if (row[id] !== null && row[id] !== undefined) {
+    document.getElementById(id).value = row[id];
    }
   });
 
-  document.getElementById("login").style.display="none";
-  document.getElementById("panel").style.display="block";
-  status("Giriş başarılı. Formülleri kontrol edebilirsin.");
-
- }catch(error){
-  status("Hata: "+error.message);
- }finally{
-  btn.disabled=false;
+  document.getElementById("login").style.display = "none";
+  document.getElementById("panel").style.display = "block";
+  showStatus("Giriş başarılı. Fiyatları ve oranları düzenleyebilirsin.");
+ } catch (error) {
+  showStatus("Hata: " + error.message);
+ } finally {
+  button.disabled = false;
  }
 }
 
-function num(id){
- const raw=document.getElementById(id).value.trim().replace(",",".");
- const value=Number(raw);
- if(raw===""||!Number.isFinite(value)){
-  throw new Error("Geçerli bir sayı gir: "+id);
+function getNumber(id) {
+ const raw = document.getElementById(id).value.trim().replace(",", ".");
+ const value = Number(raw);
+ if (raw === "" || !Number.isFinite(value)) {
+  throw new Error(id + " alanına geçerli bir sayı gir.");
  }
  return value;
 }
 
-async function saveAll(){
- const btn=document.getElementById("saveBtn");
- btn.disabled=true;
- status("Kaydediliyor...");
+async function saveAll() {
+ const button = document.getElementById("saveBtn");
+ button.disabled = true;
+ showStatus("Kaydediliyor...");
 
- try{
-  if(!accessToken||priceRowId===null){
-   throw new Error("Lütfen önce yönetici girişi yapın.");
+ try {
+  if (!accessToken || priceRowId === null) {
+   throw new Error("Önce yönetici girişi yapmalısın.");
   }
 
-  const buy=num("has_buy");
-  const sell=num("has_sell");
-
-  if(buy<=0||sell<=0){
-   throw new Error("Has fiyatları sıfırdan büyük olmalı.");
+  const hasBuy = getNumber("has_buy");
+  const hasSell = getNumber("has_sell");
+  if (hasBuy <= 0 || hasSell <= 0) {
+   throw new Error("Has alış ve satış fiyatları sıfırdan büyük olmalı.");
   }
 
-  const v={};
-  formulaFields.forEach(id=>v[id]=num(id));
+  const v = {};
+  fields.forEach(id => v[id] = getNumber(id));
 
-  const divisors=[
+  const divisors = [
    "half_buy_divisor","half_sell_divisor",
    "quarter_buy_divisor","quarter_sell_divisor"
   ];
-
-  if(divisors.some(id=>v[id]<=0)){
-   throw new Error("Bölme sayıları sıfırdan büyük olmalı.");
+  if (divisors.some(id => v[id] <= 0)) {
+   throw new Error("Yarım ve çeyrek bölme sayıları sıfırdan büyük olmalı.");
   }
 
-  await api("gold_prices?id=eq."+encodeURIComponent(priceRowId),{
-   method:"PATCH",
-   headers:{"Prefer":"return=minimal"},
-   body:JSON.stringify({has_buy:buy,has_sell:sell})
-  },accessToken);
+  // Önce has fiyatlarını kaydet.
+  await request("gold_prices?id=eq." + encodeURIComponent(priceRowId), {
+   method: "PATCH",
+   headers: {"Prefer": "return=minimal"},
+   body: JSON.stringify({has_buy: hasBuy, has_sell: hasSell})
+  });
 
-  const formula={
-   bracelet_buy:v.bracelet_buy,
-   bracelet_sell:v.bracelet_sell,
-   full_buy_factor:v.full_buy_factor,
-   full_sell_factor:v.full_sell_factor,
-   full_buy_multiplier:v.full_buy_multiplier,
-   full_sell_multiplier:v.full_sell_multiplier,
-   half_buy_divisor:v.half_buy_divisor,
-   half_sell_divisor:v.half_sell_divisor,
-   quarter_buy_divisor:v.quarter_buy_divisor,
-   quarter_sell_divisor:v.quarter_sell_divisor,
-   has_buy_multiplier:v.has_buy_multiplier,
-   has_sell_multiplier:v.has_sell_multiplier,
-   handled_deduction:v.handled_deduction,
-   handled_buy_multiplier:v.handled_buy_multiplier,
-   handled_full_multiplier:v.handled_full_multiplier,
-   updated_at:new Date().toISOString()
+  // Alış ve satış oranları ayrı alanlara kaydedilir.
+  // Eski alış/satış eşitliği kontrolü bu kodda bulunmaz.
+  const formula = {
+   bracelet_buy: v.bracelet_buy,
+   bracelet_sell: v.bracelet_sell,
+   full_buy_factor: v.full_buy_factor,
+   full_sell_factor: v.full_sell_factor,
+   full_buy_multiplier: v.full_buy_multiplier,
+   full_sell_multiplier: v.full_sell_multiplier,
+   half_buy_divisor: v.half_buy_divisor,
+   half_sell_divisor: v.half_sell_divisor,
+   quarter_buy_divisor: v.quarter_buy_divisor,
+   quarter_sell_divisor: v.quarter_sell_divisor,
+   has_buy_multiplier: v.has_buy_multiplier,
+   has_sell_multiplier: v.has_sell_multiplier,
+   handled_deduction: v.handled_deduction,
+   handled_buy_multiplier: v.handled_buy_multiplier,
+   handled_full_multiplier: v.handled_full_multiplier,
+   updated_at: new Date().toISOString()
   };
 
-  await api("gold_formula_settings?id=eq.1",{
-   method:"PATCH",
-   headers:{"Prefer":"return=minimal"},
-   body:JSON.stringify(formula)
-  },accessToken);
+  await request("gold_formula_settings?id=eq.1", {
+   method: "PATCH",
+   headers: {"Prefer": "return=minimal"},
+   body: JSON.stringify(formula)
+  });
 
-  status("Kaydedildi. Fiyatlar ve formüller başarıyla güncellendi.");
-
- }catch(error){
-  status("Hata: "+error.message);
- }finally{
-  btn.disabled=false;
+  showStatus("Kaydetme başarılı. Fiyatlar ve formüller güncellendi.");
+ } catch (error) {
+  showStatus("Hata: " + error.message);
+ } finally {
+  button.disabled = false;
  }
 }
 </script>
